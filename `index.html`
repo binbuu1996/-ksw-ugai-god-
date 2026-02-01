@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 KSW UGai God 2.0 - Ultimate Recording DAW + God AI 🔥</title>
+    <title>🔥 KSW UGai God 2.0 - ဘုရား DAW</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
-    <script src="https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -16,396 +14,102 @@
             background-size: 400% 400%;
             animation: gradientShift 8s ease infinite;
             color: #fff;
-            overflow-x: hidden;
             min-height: 100vh;
         }
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        .god-container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        @keyframes gradientShift { 0%,100%{background-position:0%50%}50%{background-position:100%50%}}
+        .god-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         .god-title {
-            text-align: center; font-size: clamp(2.5rem, 10vw, 7rem);
+            text-align: center; font-size: clamp(2.5rem, 8vw, 5rem);
             font-weight: 900; text-shadow: 0 0 40px #ff0066;
-            margin: 30px 0; animation: glow 2s ease-in-out infinite alternate;
+            margin: 20px 0; animation: glow 2s ease-in-out infinite alternate;
         }
-        @keyframes glow {
-            from { filter: drop-shadow(0 0 20px #ff0066); }
-            to { filter: drop-shadow(0 0 50px #00ff88); }
-        }
+        @keyframes glow { from{filter:drop-shadow(0 0 20px #ff0066)}to{filter:drop-shadow(0 0 50px #00ff88)}}
         .god-card {
             background: rgba(255,255,255,0.1); backdrop-filter: blur(20px);
-            border-radius: 25px; padding: 30px; margin: 25px 0;
-            border: 2px solid rgba(255,255,255,0.3);
-            transition: all 0.4s ease; position: relative; overflow: hidden;
+            border-radius: 25px; padding: 30px; margin: 20px 0;
+            border: 2px solid rgba(255,255,255,0.3); transition: all 0.4s;
         }
-        .god-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 50px rgba(0,0,0,0.6); border-color: #ff0066; }
+        .god-card:hover { transform: translateY(-10px); box-shadow: 0 20px 50px rgba(0,0,0,0.6); border-color: #ff0066; }
         .god-btn {
-            background: linear-gradient(45deg, #ff0066, #00ff88);
-            color: white; border: none; padding: 15px 35px;
-            font-size: 1.1rem; font-weight: 700; border-radius: 50px;
-            cursor: pointer; transition: all 0.4s ease; margin: 10px;
-            box-shadow: 0 10px 30px rgba(255,0,102,0.4);
+            background: linear-gradient(45deg, #ff0066, #00ff88); color: white;
+            border: none; padding: 20px 40px; font-size: 1.2rem; font-weight: 700;
+            border-radius: 50px; cursor: pointer; margin: 10px; box-shadow: 0 15px 40px rgba(255,0,102,0.4);
+            transition: all 0.4s; display: inline-block;
         }
-        .god-btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 20px 40px rgba(255,0,102,0.7); }
-        .input-god {
-            width: 100%; padding: 20px; border-radius: 20px;
-            border: 3px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.15);
-            color: white; font-size: 1.1rem; margin: 15px 0; backdrop-filter: blur(15px);
-            font-family: inherit;
-        }
-        .input-god::placeholder { color: rgba(255,255,255,0.8); }
+        .god-btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 25px 50px rgba(255,0,102,0.7); }
         .status-bar {
-            background: rgba(0,255,136,0.3); padding: 15px; border-radius: 20px;
-            margin: 20px 0; text-align: center; font-weight: 800;
-            animation: pulse 1.5s infinite; font-size: 1.1rem;
+            background: rgba(0,255,136,0.3); padding: 20px; border-radius: 20px;
+            margin: 20px 0; text-align: center; font-weight: 800; animation: pulse 1.5s infinite;
         }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-
-        /* Language Switch */
-        #lang-switch { position: fixed; top: 20px; right: 20px; z-index: 1001; }
+        @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.6}}
+        .lang-switch { position: fixed; top: 20px; right: 20px; z-index: 1000; }
         .lang-btn { background: rgba(255,255,255,0.2); color: white; border: none; padding: 10px 20px; border-radius: 20px; margin: 0 5px; cursor: pointer; }
-
-        /* DAW Styles */
-        #daw-container { display: none; height: 600px; }
-        #timeline { height: 200px; background: rgba(0,0,0,0.5); border-radius: 15px; overflow: hidden; position: relative; }
-        .track { height: 60px; background: rgba(255,255,255,0.1); margin: 5px; border-radius: 10px; display: flex; align-items: center; padding: 0 10px; cursor: move; }
-        .track.mute { opacity: 0.5; }
-        .plugin-panel { display: none; background: rgba(0,0,0,0.7); padding: 20px; border-radius: 15px; margin-top: 10px; }
-        select, input[type=range] { width: 100%; margin: 10px 0; }
-
-        /* God AI Chat */
-        #god-chat { position: fixed; bottom: 20px; right: 20px; width: 400px; height: 500px; background: rgba(0,0,0,0.95); backdrop-filter: blur(25px); border-radius: 25px; border: 3px solid #ff0066; display: none; z-index: 1000; }
-        #god-messages { height: 400px; overflow-y: auto; padding: 20px; }
-        .god-msg { margin: 10px 0; padding: 15px; border-radius: 15px; }
-        .god-user { background: rgba(0,255,136,0.3); text-align: right; }
-        .god-ai { background: rgba(255,102,204,0.3); border-left: 4px solid #ff66cc; }
-
-        /* Mobile */
-        @media (max-width: 768px) {
-            .god-container { padding: 10px; }
-            #god-chat { width: 90vw; right: 5%; }
-            #daw-container { height: 500px; }
-        }
     </style>
 </head>
 <body>
     <!-- Language Switch -->
-    <div id="lang-switch">
+    <div class="lang-switch">
         <button class="lang-btn" onclick="setLang('my')">မြန်မာ</button>
         <button class="lang-btn" onclick="setLang('en')">English</button>
     </div>
 
     <div class="god-container">
-        <h1 class="god-title" data-my="🔥 KSW UGai God 2.0 <br><span style='font-size:0.5em'>Ultimate DAW + Recording God AI</span>" data-en="🔥 KSW UGai God 2.0 <br><span style='font-size:0.5em'>Ultimate DAW + Recording God AI</span>">
-            🔥 KSW UGai God 2.0 <br><span style="font-size:0.5em">Ultimate DAW + Recording God AI</span>
+        <!-- 🔥 ဘုရား ခေါင်းစဉ် -->
+        <h1 class="god-title" data-my="🔥 KSW UGai God 2.0<br><span style='font-size:0.4em'>ဘုရား DAW + Voice AI</span>" data-en="🔥 KSW UGai God 2.0<br><span style='font-size:0.4em'>God DAW + Voice AI</span>">
+            🔥 KSW UGai God 2.0<br><span style="font-size:0.4em">ဘုရား DAW + Voice AI</span>
         </h1>
         
-        <!-- Miami Heat -->
+        <!-- 🎤 Voice Record အပိုင်း -->
         <div class="god-card">
-            <h2 data-my="<i class='fas fa-fire'></i> 🔥 Miami Heat Festival Trap" data-en="<i class='fas fa-fire'></i> 🔥 Miami Heat Festival Trap">
-                <i class="fas fa-fire"></i> 🔥 Miami Heat Festival Trap
+            <h2 data-my="<i class='fas fa-microphone'></i> 🎤 ဘုရား Voice → Stems" data-en="<i class='fas fa-microphone'></i> 🎤 God Voice → Stems">
+                <i class="fas fa-microphone"></i> 🎤 ဘုရား Voice → Stems
             </h2>
-            <p data-my="ဘုရား ဖန်တီးထားတဲ့ Festival Banger (128 BPM)" data-en="God-created Festival Banger (128 BPM)">
-                ဘုရား ဖန်တီးထားတဲ့ Festival Banger (128 BPM)
+            <p data-my="သင့်အသံ ရိုက်ပြီး AI နဲ့ ၅ လိုင်း stems ခွဲ၊ DAW မှာ mix" data-en="Record voice → AI splits 5 stems → Mix in DAW">
+                သင့်အသံ ရိုက်ပြီး AI နဲ့ ၅ လိုင်း stems ခွဲ၊ DAW မှာ mix
             </p>
-            <audio id="miamiAudio" controls style="width:100%; margin:20px 0; border-radius:15px;">
-                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-            </audio>
-            <button class="god-btn" onclick="downloadStems('miami-heat-stems.zip')">
-                <i class="fas fa-download"></i> <span data-my="PRO 5-Stem Download" data-en="PRO 5-Stem Download">PRO 5-Stem Download</span>
+            <button class="god-btn" id="recordBtn" onclick="startRecord()">
+                <i class="fas fa-microphone-slash"></i> <span data-my="အသံ ရိုက်မည်" data-en="Start Record">အသံ ရိုက်မည်</span>
             </button>
-        </div>
-        
-        <!-- Hum to Hit - Voice to Stems -->
-        <div class="god-card">
-            <h2 data-my="<i class='fas fa-microphone'></i> 🎤 Hum → Stems → Full Song" data-en="<i class='fas fa-microphone'></i> 🎤 Hum → Stems → Full Song">
-                <i class="fas fa-microphone"></i> 🎤 Hum → Stems → Full Song
-            </h2>
-            <p data-my="သင့်အသံ ရိုက်ပြီး track တစ်လိုင်း ချင်း stems ထုတ်၊ DAW မှာ edit" data-en="Record your voice, extract stems per phrase, edit in DAW">
-                သင့်အသံ ရိုက်ပြီး track တစ်လိုင်း ချင်း stems ထုတ်၊ DAW မှာ edit
-            </p>
-            <button class="god-btn" onclick="startVoiceRecord()">
-                <i class="fas fa-microphone-slash"></i> <span data-my="အသံ ရိုက်ယူမည်" data-en="Start Voice Record">အသံ ရိုက်ယူမည်</span>
-            </button>
-            <div class="status-bar" id="voiceStatus" style="display:none;"></div>
-            <button class="god-btn" onclick="openDAW()">
-                <i class="fas fa-project-diagram"></i> <span data-my="God DAW ဖွင့်" data-en="Open God DAW">God DAW ဖွင့်</span>
-            </button>
-        </div>
-        
-        <!-- Text to Track -->
-        <div class="god-card">
-            <h2 data-my="<i class='fas fa-font'></i> ✨ Text → Pro Track" data-en="<i class='fas fa-font'></i> ✨ Text → Pro Track">
-                <i class="fas fa-font"></i> ✨ Text → Pro Track
-            </h2>
-            <input type="text" class="input-god" id="textInput" data-my-placeholder="EDM drop, Festival trap, မြန်မာ pop..." data-en-placeholder="EDM drop, Festival trap, Myanmar pop...">
-            <div class="status-bar" id="textStatus" style="display:none;"></div>
-            <button class="god-btn" onclick="generateText()">
-                <i class="fas fa-bolt"></i> <span data-my="Instant Pro Beat" data-en="Instant Pro Beat">Instant Pro Beat</span>
-            </button>
-        </div>
-        
-        <!-- God DAW -->
-        <div class="god-card" id="daw-container">
-            <h2 data-my="👑 God Recording DAW - BandLab/Logic Pro Level" data-en="👑 God Recording DAW - BandLab/Logic Pro Level">
-                👑 God Recording DAW - BandLab/Logic Pro Level
-            </h2>
-            <div id="timeline">
-                <canvas id="waveCanvas" width="1200" height="200" style="width:100%; height:100%;"></canvas>
-            </div>
-            <div id="tracks"></div>
-            <div class="plugin-panel" id="pluginPanel">
-                <h4 data-my="Plugins & Instruments" data-en="Plugins & Instruments">Plugins & Instruments</h4>
-                <select id="instrumentSelect">
-                    <option value="synth">Synth Lead</option>
-                    <option value="bass">808 Bass</option>
-                    <option value="drums">Trap Drums</option>
-                    <option value="guitar">Electric Guitar</option>
-                </select>
-                <input type="range" id="volume" min="0" max="100" value="50"><label>Volume</label>
-                <input type="range" id="reverb" min="0" max="100" value="30"><label>Reverb</label>
-                <button class="god-btn" onclick="addTrack()">Add Instrument</button>
-                <button class="god-btn" onclick="togglePluginPanel()">Close</button>
-            </div>
-            <button class="god-btn" onclick="togglePluginPanel()">
-                <i class="fas fa-plug"></i> Plugins
-            </button>
-            <button class="god-btn" onclick="exportProject()">
-                <i class="fas fa-download"></i> Export Mix
-            </button>
-        </div>
-        
-        <!-- God Mode -->
-        <div class="god-card">
-            <h2 data-my="<i class='fas fa-crown'></i> 👑 Unlimited God Mode" data-en="<i class='fas fa-crown'></i> 👑 Unlimited God Mode">
-                <i class="fas fa-crown"></i> 👑 Unlimited God Mode
-            </h2>
-            <p data-my="Unlimited stems, tracks, AI assists - Forever Free" data-en="Unlimited stems, tracks, AI assists - Forever Free">
-                Unlimited stems, tracks, AI assists - Forever Free
-            </p>
-            <button class="god-btn" onclick="godMode()" style="background:linear-gradient(45deg,#ffd700,#ff1493);">
-                <i class="fas fa-gem"></i> <span data-my="God Mode ON" data-en="God Mode ON">God Mode ON</span>
-            </button>
-            <div id="godStatus"></div>
-        </div>
-    </div>
 
-    <!-- 🔥 Recording God AI Assistant Chat -->
-    <div id="god-chat">
-        <div id="god-header" data-my="<i class='fas fa-robot'></i> Recording God AI - Pro Tips & Auto Create" data-en="<i class='fas fa-robot'></i> Recording God AI - Pro Tips & Auto Create">
-            <i class="fas fa-robot"></i> Recording God AI - Pro Tips & Auto Create
-        </div>
-        <div id="god-messages">
-            <div class="god-msg god-ai" data-my="မင်္ဂလာပါ! ဘုရားအဆင့် production အတွက် ဘာလိုချင်လဲ? 'Add 808 bass with sidechain', 'Master this mix' ပြော..." data-en="Welcome! What pro production do you need? 'Add 808 bass with sidechain', 'Master this mix'...">
-                မင်္ဂလာပါ! ဘုရားအဆင့် production အတွက် ဘာလိုချင်လဲ? 'Add 808 bass with sidechain', 'Master this mix' ပြော...
-            </div>
-        </div>
-        <div style="padding:20px; display:flex; gap:10px;">
-            <input id="god-input" class="input-god" placeholder="e.g. ဒရန်း ထပ်ထည့် reverb နည်း..." style="flex:1;">
-            <button class="god-btn" onclick="sendGodAI()" style="padding:20px;">
-                <i class="fas fa-magic"></i>
-            </button>
-        </div>
-    </div>
 
-    <!-- Chatbot (Original) -->
-    <div id="chatbot-btn" onclick="toggleChatbot()">
-        <i class="fas fa-comments"></i>
-    </div>
-    <!-- Original chatbot window omitted for brevity, keep as is -->
-
-    <script>
-        // Language System
-        let currentLang = 'my';
-        const translations = {};
-        function setLang(lang) {
-            currentLang = lang;
-            document.querySelectorAll('[data-my], [data-en]').forEach(el => {
-                el.textContent = el.getAttribute(`data-${lang}`) || el.textContent;
-            });
-            document.querySelectorAll('.input-god[ data-my-placeholder]').forEach(el => {
-                el.placeholder = el.getAttribute(`data-${lang}-placeholder`) || '';
-            });
-            localStorage.setItem('lang', lang);
-        }
-        window.onload = () => {
-            currentLang = localStorage.getItem('lang') || 'my';
-            setLang(currentLang);
-        };
-
-        // Audio Context
-        let audioContext = null;
-        let mediaRecorder = null;
-        let recordedChunks = [];
-        let tracks = []; // DAW tracks
-
-        // Voice Recording
-        async function startVoiceRecord() {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
-            recordedChunks = [];
-            mediaRecorder.ondataavailable = e => recordedChunks.push(e.data);
-            mediaRecorder.onstop = processVoiceToStems;
-            mediaRecorder.start();
-            document.getElementById('voiceStatus').style.display = 'block';
-            document.getElementById('voiceStatus').innerHTML = currentLang === 'my' ? '🎤 ရိုက်ယူနေတယ်... ရပ်ချင်ရင် ခလုတ်နှိပ်' : '🎤 Recording... Stop to process';
-            setTimeout(() => { if (mediaRecorder.state === 'recording') mediaRecorder.stop(); }, 10000); // 10s auto
-        }
-
-        // Simulate AI Stem Separation (in real: use Demucs.js or API)
-        async function processVoiceToStems() {
-            const audioBlob = new Blob(recordedChunks, { type: 'audio/wav' });
-            const arrayBuffer = await audioBlob.arrayBuffer();
-            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+'✅ Voice ready! Play below + Open DAW';
             
-            // Simulate stems: split into phrases ~4s each
-            const phraseLen = audioBuffer.length / 4;
-            const stems = [
-                { name: 'Vocals', buffer: audioBuffer, color: '#ff66cc' },
-                { name: 'Melody', buffer: audioBuffer, color: '#00ff88' },
-                { name: 'Backing', buffer: audioBuffer, color: '#ff0066' }
-            ];
-            tracks = stems;
-            displayTracks();
-            document.getElementById('voiceStatus').innerHTML = currentLang === 'my' ? '✅ Stems ရပြီ! DAW မှာ edit လုပ်' : '✅ Stems ready! Edit in DAW';
-        }
-
-        // DAW Functions
-        function openDAW() {
-            document.getElementById('daw-container').style.display = 'block';
-            initTimeline();
-        }
-
-        function displayTracks() {
-            const container = document.getElementById('tracks');
-            container.innerHTML = '';
-            tracks.forEach((track, i) => {
-                const div = document.createElement('div');
-                div.className = 'track';
-                div.style.borderLeft = `4px solid ${track.color}`;
-                div.innerHTML = `
-                    <i class="fas fa-volume-up"></i> ${track.name}
-                    <button onclick="muteTrack(${i})" style="margin-left:auto;"><i class="fas fa-mute"></i></button>
-                    <button onclick="soloTrack(${i})"><i class="fas fa-volume-up"></i></button>
-                `;
-                div.ondblclick = () => playTrack(i);
-                container.appendChild(div);
-            });
-        }
-
-        function initTimeline() {
-            const canvas = document.getElementById('waveCanvas');
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = '#333';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            // Draw placeholder waveforms
-        }
-
-        function addTrack() {
-            const inst = document.getElementById('instrumentSelect').value;
-            tracks.push({ name: inst.charAt(0).toUpperCase() + inst.slice(1), buffer: null, color: '#ffd700', synth: createSynth(inst) });
-            displayTracks();
-        }
-
-        function createSynth(type) {
-            if (type === 'synth') return new Tone.Synth().toDestination();
-            if (type === 'bass') return new Tone.MembraneSynth().toDestination();
-            if (type === 'drums') return new Tone.MembraneSynth({pitchDecay: 0.05}).toDestination();
-            // More in full impl
-            return new Tone.Synth().toDestination();
-        }
-
-        function playTrack(i) {
-            // Play track buffer/synth
-            console.log('Playing track', i);
-            Tone.start();
-            tracks[i].synth?.triggerAttackRelease('C4', '8n');
-        }
-
-        function muteTrack(i) { tracks[i].muted = !tracks[i].muted; document.querySelectorAll('.track')[i].classList.toggle('mute'); }
-        function soloTrack(i) { /* Impl solo */ }
-
-        function togglePluginPanel() {
-            document.getElementById('pluginPanel').style.display = document.getElementById('pluginPanel').style.display === 'none' ? 'block' : 'none';
-        }
-
-        // God AI Assistant - Advanced Copilot
-        const godResponses = {
-            '808': () => { addTrack(); return currentLang === 'my' ? '✅ 808 Bass ထည့်ပြီ! Sidechain pump လိုချင်လား?' : '✅ 808 Bass added! Want sidechain pump?'; },
-            'reverb': () => { /* Apply Tone.Reverb */ return 'Reverb applied professionally.'; },
-            'master': () => { /* Simulate master */ return 'Mastering complete: Loudness -10 LUFS, balanced spectrum.'; },
-            // Future ideas: Auto-arrange, genre shift, vocal tune
-        };
-
-        function sendGodAI() {
-            const input = document.getElementById('god-input');
-            const msg = input.value.toLowerCase().trim();
-            if (!msg) return;
-            addGodMessage('user', msg);
-            input.value = '';
-
+            // Simulate AI stems processing
             setTimeout(() => {
-                let response = currentLang === 'my' ? 'ဘုရား AI နဲ့ ဖန်တီးနေတယ်...' : 'God AI creating...';
-                if (msg.includes('808') || msg.includes('bass')) response = godResponses['808']();
-                else if (msg.includes('reverb') || msg.includes('echo')) response = godResponses['reverb']();
-                else if (msg.includes('master') || msg.includes('mix')) response = godResponses['master']();
-                else if (msg.includes('drop')) {
-                    response = currentLang === 'my' ? '🔥 Festival Drop ထည့်ပြီ! BPM 128, build-up + white noise' : '🔥 Festival Drop added! BPM 128, build-up + white noise';
-                    // Add drop elements
-                } else {
-                    response = currentLang === 'my' ? 'Pro tip: "add 808 bass", "increase energy", "Myanmar pop vocal chop" ပြော' : 'Pro tip: "add 808 bass", "increase energy", "Myanmar pop vocal chop"';
-                }
-                addGodMessage('ai', response);
-                // Auto apply effects based on cmd
-            }, 1000);
+                document.getElementById('recordStatus').innerHTML += currentLang === 'my' ? 
+                    '<br>🎵 AI Stems: Vocals, Drums, Bass, Melody, FX ရပြီ!' : 
+                    '<br>🎵 AI Stems: Vocals, Drums, Bass, Melody, FX ready!';
+            }, 2000);
         }
 
-        function addGodMessage(type, text) {
-            const messages = document.getElementById('god-messages');
-            const div = document.createElement('div');
-            div.className = `god-msg god-${type}`;
-            div.textContent = `${type === 'user' ? (currentLang === 'my' ? 'သင်:' : 'You:') : (currentLang === 'my' ? 'God AI:' : 'God AI:')} ${text}`;
-            messages.appendChild(div);
-            messages.scrollTop = messages.scrollHeight;
+        // Text to Beat
+        function generateBeat() {
+            const input = document.getElementById('textInput').value || 'EDM drop';
+            document.getElementById('recordStatus').style.display = 'block';
+            document.getElementById('recordStatus').innerHTML = 
+                currentLang === 'my' ? ⚡ "${input}" Festival Beat ဖန်တီးနေတယ်... : 
+                ⚡ "${input}" Festival Beat generating...;
+            
+            setTimeout(() => {
+                document.getElementById('recordStatus').innerHTML = `
+                    ✅ Beat Ready! 🎧 ${input}<br>
+                    <audio controls style="width:100%;margin-top:15px;">
+                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3" type="audio/mpeg">
+                    </audio>`;
+            }, 3000);
         }
 
-        // Other functions (generateText, godMode, etc. enhanced similarly)
-        function generateText() {
-            // Simulate with Tone.js patterns
-            Tone.start();
-            const synth = new Tone.Synth().toDestination();
-            const loop = new Tone.Loop((time) => { synth.triggerAttackRelease("C4 E4 G4", "8n", time); }, "4n").start(0);
-            Tone.Transport.start();
-            setTimeout(() => Tone.Transport.stop(), 5000);
-        }
-
+        // God Mode
         function godMode() {
             document.getElementById('godStatus').innerHTML = `
-                <div style="color:#ffd700;font-size:1.6rem;animation:pulse 1s infinite;">
-                    👑 <strong>GOD MODE ACTIVATED - Unlimited Pro Production</strong> 👑
-                    <small>${currentLang === 'my' ? 'ဘယ်လောက်ဖန်တီးရင်း ဘယ်လောက်ဖန်တီးပါ' : 'Create unlimited - Forever Free'}</small>
+                <div style="color:#ffd700;font-size:1.6rem;animation:pulse 1s infinite;text-align:center;">
+                    👑 <strong>ဘုရား MODE ACTIVATED</strong> 👑<br>
+                    <small style="color:#ccc;">${currentLang === 'my' ? 'Unlimited DAW + AI Forever Free' : 'Unlimited DAW + AI Forever Free'}</small>
                 </div>`;
-            document.getElementById('god-chat').style.display = 'block';
         }
 
-        function downloadStems(filename) {
-            alert(`Downloading PRO stems: ${filename} (Vocals, Drums, Bass, Melody, FX)`);
-            // Real: JSZip + export buffers
-        }
-
-        function exportProject() {
-            alert('Exporting pro mix as WAV... (Full master ready)');
-            // Real: OfflineAudioContext render
-        }
-
-        // Original functions (generateHum, toggleChatbot, sendMessage) - keep and enhance similarly
-        function generateHum() { /* Existing */ }
-        function toggleChatbot() { /* Existing */ }
-
-        // Habit Guide Modal (on load or button)
-        // Add button to show step-by-step habit building
+        // Initialize
+        window.onload = () => setLang(localStorage.getItem('lang') || 'my');
     </script>
 </body>
 </html>
