@@ -1,0 +1,41 @@
+'✅ Voice ready! Play below + Open DAW';
+            
+            // Simulate AI stems processing
+            setTimeout(() => {
+                document.getElementById('recordStatus').innerHTML += currentLang === 'my' ? 
+                    '<br>🎵 AI Stems: Vocals, Drums, Bass, Melody, FX ရပြီ!' : 
+                    '<br>🎵 AI Stems: Vocals, Drums, Bass, Melody, FX ready!';
+            }, 2000);
+        }
+
+        // Text to Beat
+        function generateBeat() {
+            const input = document.getElementById('textInput').value || 'EDM drop';
+            document.getElementById('recordStatus').style.display = 'block';
+            document.getElementById('recordStatus').innerHTML = 
+                currentLang === 'my' ? ⚡ "${input}" Festival Beat ဖန်တီးနေတယ်... : 
+                ⚡ "${input}" Festival Beat generating...;
+            
+            setTimeout(() => {
+                document.getElementById('recordStatus').innerHTML = `
+                    ✅ Beat Ready! 🎧 ${input}<br>
+                    <audio controls style="width:100%;margin-top:15px;">
+                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3" type="audio/mpeg">
+                    </audio>`;
+            }, 3000);
+        }
+
+        // God Mode
+        function godMode() {
+            document.getElementById('godStatus').innerHTML = `
+                <div style="color:#ffd700;font-size:1.6rem;animation:pulse 1s infinite;text-align:center;">
+                    👑 <strong>ဘုရား MODE ACTIVATED</strong> 👑<br>
+                    <small style="color:#ccc;">${currentLang === 'my' ? 'Unlimited DAW + AI Forever Free' : 'Unlimited DAW + AI Forever Free'}</small>
+                </div>`;
+        }
+
+        // Initialize
+        window.onload = () => setLang(localStorage.getItem('lang') || 'my');
+    </script>
+</body>
+</html>
